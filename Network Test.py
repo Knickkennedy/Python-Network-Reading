@@ -1,13 +1,19 @@
 import networkx as nx
-import matplotlib.pyplot as plot
+import os
 
-file = open("C:/Users/knich/Documents/Python Workplace/NetworkProblem/E_Coli/100/ecoli_transcriptional_network_regulonDB_6_7-1.tsv", "r")
+directory = "D:/E_Coli/"
 
-graph = nx.Graph()
+for subdirectory in os.listdir(directory):
+    final_directory = directory + subdirectory + "/"
+    for file in os.listdir(final_directory):
+        graph = nx.Graph()
+        file_to_read = open(final_directory + file, "r")
 
-for line in file:
-    this_line = line.split()
-    graph.add_edge(this_line[0], this_line[1])
+        for line in file_to_read:
+            this_line = line.split()
+            graph.add_edge(this_line[0], this_line[1])
 
-nx.draw(graph, with_labels=True)
-plot.show()
+        nx.to_undirected(graph)
+
+        if nx.number_connected_components(graph) > 1:
+            print("Not connected.")
